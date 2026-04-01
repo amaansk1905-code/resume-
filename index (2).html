@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertex Platinum Banking - Advanced Digital Banking Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">VERTEX<span>PLATINUM</span></div>
+        <div class="nav-actions">
+            <div class="notification-bell">
+                <button id="notification-btn" class="btn-icon">🔔</button>
+                <div id="notification-panel" class="notification-panel hidden">
+                    <div class="notification-header">
+                        <h4>Notifications</h4>
+                        <button onclick="clearNotifications()" class="clear-btn">Clear All</button>
+                    </div>
+                    <div id="notifications-list" class="notifications-list"></div>
+                </div>
+            </div>
+            <button id="theme-toggle" class="btn-icon">🌓</button>  
+            <div class="user-menu">
+                <button id="user-menu-btn" class="btn-icon user-avatar">👤</button>
+                <div id="user-dropdown" class="user-dropdown hidden">
+                    <div class="user-info">
+                        <p id="dropdown-username">User</p>
+                        <p id="dropdown-tier" class="tier-badge">Free Tier</p>
+                    </div>
+                    <button onclick="showPage('profile')" class="dropdown-item">My Profile</button>
+                    <button onclick="showPage('subscription')" class="dropdown-item">Subscription Plans</button>
+                    <button onclick="showPage('settings')" class="dropdown-item">Settings</button>
+                    <hr>
+                    <button onclick="logout()" class="dropdown-item logout-btn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <aside id="sidebar" class="sidebar hidden">
+            <div class="sidebar-header">
+                <h4 id="sidebar-username">User</h4>
+                <p id="sidebar-tier">Free Tier</p>
+            </div>
+            <nav class="sidebar-nav">
+                <button onclick="showPage('dashboard')" class="nav-item active">📊 Overview</button>
+                <button onclick="showPage('transfer')" class="nav-item">💸 Fund Transfer</button>
+                <button onclick="showPage('bills')" class="nav-item">📄 Pay Bills</button>
+                <button onclick="showPage('investments')" class="nav-item">📈 Investments</button>
+                <button onclick="showPage('loans')" class="nav-item">🏦 Loans</button>
+                <button onclick="showPage('emi-calc')" class="nav-item">🧮 EMI Calculator</button>
+                <button onclick="showPage('forex')" class="nav-item premium">💱 Forex Trading</button>  
+                <button onclick="showPage('statements')" class="nav-item">📋 Statements</button>
+            </nav>
+        </aside>
+
+        <main class="content-area">
+            
+            <!-- Home Page -->
+            <section id="home" class="page active">
+                <div class="hero-section">
+                    <div class="hero-content">
+                        <h1>Banking for the <span class="accent">Future.</span></h1>
+                        <p>Next-generation digital banking with AI-powered insights and wealth management</p>
+                        <div class="hero-buttons">
+                            <button class="btn-primary large" onclick="showPage('login')">Sign In</button>
+                        </div>
+                    </div>
+                    <div class="hero-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">🔒</span>
+                            <h3>Bank-Grade Security</h3>
+                            <p>256-bit encryption & 2FA</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">⚡</span>
+                            <h3>Instant Transfers</h3>
+                            <p>Real-time money movement</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">💱</span>
+                            <h3>Forex Trading</h3>
+                            <p>Smart spending insights</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Signup Page -->
+            <section id="signup" class="page">
+                <div class="auth-container">
+                    <div class="auth-card">
+                        <h2>Create Your Account</h2>
+                        <form id="signup-form">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="signup-name" placeholder="Full Name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="signup-email" placeholder="Email Address" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="signup-phone" placeholder="Phone Number" pattern="+91[0-9]{10}" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Create Username</label>
+                                <input type="text" id="signup-username" placeholder="Username" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="signup-password" placeholder="Min 8 characters" required>
+                                <div class="password-strength">
+                                    <div id="strength-meter" class="strength-meter"></div>
+                                    <span id="strength-text">Weak</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="password" id="signup-confirm" placeholder="Re-enter password" required>
+                            </div>
+                            <div class="form-group checkbox">
+                                <input type="checkbox" id="terms-check" required>
+                                <label for="terms-check">I agree to Terms & Conditions</label>
+                            </div>
+                            <button type="submit" class="btn-primary full-width">Create Account</button>
+                            <p class="auth-link">Already have an account? <a href="#" onclick="showPage('login')">Sign In</a></p>
+                        </form>
+                        <p id="signup-error" class="error-text"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Login Page -->
+            <section id="login" class="page">
+                <div class="auth-container">
+                    <div class="auth-card">
+                        <h2>Login to Your Account</h2>
+                        <form id="login-form">
+                            <div class="form-group">
+                                <label>Username or Email</label>
+                                <input type="text" id="login-username" placeholder="Enter your username or email" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="login-password" placeholder="Enter your password" required>
+                            </div>
+                            <div class="form-options">
+                                <label><input type="checkbox" id="remember-me"> Remember me</label>
+                                <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
+                            </div>
+                            <button type="submit" class="btn-primary full-width">Sign In</button>
+                            <p class="auth-link">Don't have an account? <a href="#" onclick="showPage('signup')">Create One</a></p>
+                        </form>
+                        <p id="login-error" class="error-text"></p>
+                        
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard -->
+            <section id="dashboard" class="page">
+                <div class="dashboard-header">
+                    <div class="greeting">
+                        <h1>Welcome back, <span id="user-display">User</span> 👋</h1>
+                        <p id="greeting-message">Good morning! Here's your financial overview.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn-secondary" onclick="downloadStatement()">📥 Download Statement</button>
+                        <button class="btn-secondary" onclick="refreshData()">🔄 Refresh</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Balance Card -->
+                    <div class="glass-card balance-card premium-feature" id="balance-card-container">
+                        <div class="card-header">
+                            <h3>Current Balance</h3>
+                            <button class="toggle-btn" onclick="toggleBalance()">👁️</button>
+                        </div>
+                        <div class="balance-display">
+                            <h2 id="balance-amount">$0.00</h2>
+                            <p class="account-info">Savings Account: <strong>****4589</strong></p>
+                        </div>
+                        <div class="balance-stats">
+                            <div class="stat">
+                                <span class="stat-label">This Month Change</span>
+                                <span class="stat-value positive" id="month-change">+$2,450.00</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Available Credit</span>
+                                <span class="stat-value" id="available-credit">$15,000.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="glass-card quick-actions">
+                        <h3>Quick Actions</h3>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="showPage('transfer')" title="Send Money">
+                                <span class="icon">💸</span>
+                                <span>Transfer</span>
+                            </button>
+                            <button class="action-btn" onclick="showPage('bills')" title="Pay Bills">
+                                <span class="icon">📄</span>
+                                <span>Bills</span>
+                            </button>
+                            <button class="action-btn" onclick="showPage('investments')" title="Invest Money">
+                                <span class="icon">📈</span>
+                                <span>Invest</span>
+                            </button>
+                            <button class="action-btn" onclick="showPage('loans')" title="Apply for Loan">
+                                <span class="icon">🏦</span>
+                                <span>Loans</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    
+
+                    <!-- Recent Transactions -->
+                    <div class="glass-card transactions-card full-width">
+                        <div class="card-header">
+                            <h3>Recent Transactions</h3>
+                            <a href="#" onclick="showPage('statements')">View All →</a>
+                        </div>
+                        <ul id="transaction-history" class="transactions-list"></ul>
+                    </div>
+
+                    <!-- Subscription Info -->
+                    <div class="glass-card subscription-info">
+                        <h3>Your Subscription</h3>
+                        <div class="subscription-badge" id="subscription-badge">
+                            <span class="badge-icon">👑</span>
+                            <div class="badge-content">
+                                <p id="subscription-tier">Free Tier</p>
+                                <p id="subscription-features">Basic banking features</p>
+                            </div>
+                        </div>
+                        <button class="btn-secondary" onclick="showPage('subscription')">Upgrade Plan</button>
+                    </div>
+
+                    <!-- Market Updates (Premium Feature) -->
+                    <div class="glass-card market-updates premium-feature" id="market-card-container">
+                        <h3>Market Updates</h3>
+                        <div class="market-list">
+                            <div class="market-item">
+                                <span class="ticker">AAPL</span>
+                                <span class="price">$183.45</span>
+                                <span class="change positive">+2.5%</span>
+                            </div>
+                            <div class="market-item">
+                                <span class="ticker">GOOGL</span>
+                                <span class="price">$142.30</span>
+                                <span class="change negative">-1.2%</span>
+                            </div>
+                            <div class="market-item">
+                                <span class="ticker">BTC</span>
+                                <span class="price">$45,230</span>
+                                <span class="change positive">+5.8%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Goals Progress (Premium Feature) -->
+                    <div class="glass-card goals-card premium-feature" id="goals-card-container">
+                        <h3>Financial Goals</h3>
+                        <div class="goals-list">
+                            <div class="goal-item">
+                                <div class="goal-info">
+                                    <p>Vacation Fund</p>
+                                    <span>$3,500 / $5,000</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 70%"></div>
+                                </div>
+                            </div>
+                            <div class="goal-item">
+                                <div class="goal-info">
+                                    <p>Emergency Fund</p>
+                                    <span>$8,200 / $10,000</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 82%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            
+            <!-- Fund Transfer -->
+            <section id="transfer" class="page">
+                <div class="page-header">
+                    <h1>Amount Transactions</h1>
+                    <p>Send money securely and instantly</p>
+                </div>
+                <div class="form-container">
+                    <div class="glass-card">
+                        <div class="tabs">
+                            <button class="tab-btn active" onclick="switchTransferTab('new')">New Transfer</button>
+                            <button class="tab-btn" onclick="switchTransferTab('favorites')">Saved Recipients</button>
+                        </div>
+                        
+                        <div id="new-transfer-tab" class="tab-content active">
+                            <form id="transfer-form">
+                                <div class="form-section">
+                                    <h3>Recipient Details</h3>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Beneficiary Name *</label>
+                                            <input type="text" id="bene-name" placeholder="Full name of recipient" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Account Number *</label>
+                                            <input type="text" id="bene-acc" placeholder="XXXX XXXX XXXX 1234" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>IFSC Code *</label>
+                                            <input type="text" id="ifsc-code" placeholder="SBIN0001234" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Bank Name</label>
+                                            <input type="text" id="bank-name" placeholder="Name of the bank (optional)">
+                                        </div>
+                                    </div>
+                                </div>                                
+                                <div class="form-section">
+                                    <h3>Transfer Details</h3>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Transfer Type *</label>
+                                            <select id="transfer-type" required>
+                                                <option value="">Select transfer method</option>
+                                                <option value="imps">IMPS (15-30 mins)</option>
+                                                <option value="neft">NEFT (Next working day)</option>
+                                                <option value="rtgs">RTGS (30 mins - 4 hours)</option>
+                                                <option value="upi" class="premium-option">UPI (Instant)</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Amount (USD) *</label>
+                                            <div class="amount-input">
+                                                <span>$</span>
+                                                <input type="number" id="transfer-amt" placeholder="0.00" required min="1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Reference/Description</label>
+                                        <textarea id="transfer-ref" placeholder="Add a note (optional)"></textarea>
+                                    </div>
+                                    <div class="form-group checkbox">
+                                        <input type="checkbox" id="save-recipient">
+                                        <label for="save-recipient">Save this recipient for future transfers</label>
+                                    </div>
+                                </div>
+
+                                <div class="transfer-preview" id="transfer-preview" style="display: none;">
+                                    <h4>Review Transfer</h4>
+                                    <div class="preview-row">
+                                        <span>Recipient:</span>
+                                        <strong id="preview-name">--</strong>
+                                    </div>
+                                    <div class="preview-row">
+                                        <span>Account:</span>
+                                        <strong id="preview-acc">--</strong>
+                                    </div>
+                                    <div class="preview-row">
+                                        <span>Amount:</span>
+                                        <strong id="preview-amount">--</strong>
+                                    </div>
+                                    <div class="preview-row">
+                                        <span>Method:</span>
+                                        <strong id="preview-method">--</strong>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn-primary full-width large">Proceed to Confirm</button>
+                            </form>
+                        </div>
+
+                        <div id="favorites-tab" class="tab-content">
+                            <div id="saved-recipients-list" class="recipients-grid">
+                                <!-- Saved recipients will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pay Bills -->
+            <section id="bills" class="page">
+                <div class="page-header">
+                    <h1>📄 Pay Bills</h1>
+                    <p>Manage all your bills in one place</p>
+                </div>
+                <div class="bills-container">
+                    <div class="glass-card bill-option">
+                        <div class="bill-header">
+                            <span class="bill-icon">⚡</span>
+                            <h3>Utility Bills</h3>
+                        </div>
+                        <form id="utility-form">
+                            <div class="form-group">
+                                <label>Bill Type *</label>
+                                <select id="utility-type" required>
+                                    <option value="">Select utility</option>
+                                    <option value="electricity">Electricity</option>
+                                    <option value="water">Water</option>
+                                    <option value="gas">Gas</option>
+                                    <option value="internet">Internet</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Consumer/Reference ID *</label>
+                                <input type="text" id="utility-consumer" placeholder="Enter your ID" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount (USD) *</label>
+                                <input type="number" id="utility-amt" placeholder="0.00" required>
+                            </div>
+                            <button type="submit" class="btn-primary">Pay Now</button>
+                        </form>
+                    </div>
+
+                    <div class="glass-card bill-option">
+                        <div class="bill-header">
+                            <span class="bill-icon">📱</span>
+                            <h3>Mobile Recharge</h3>
+                        </div>
+                        <form id="mobile-form">
+                            <div class="form-group">
+                                <label>Phone Number *</label>
+                                <input type="tel" id="mobile-number" placeholder="+1 (555) 000-0000" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Operator *</label>
+                                <select id="mobile-operator" required>
+                                    <option value="">Select operator</option>
+                                    <option value="airtel">Airtel</option>
+                                    <option value="jio">Jio</option>
+                                    <option value="vodafone">Vodafone</option>
+                                    <option value="idea">Idea</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Recharge Amount (USD) *</label>
+                                <input type="number" id="mobile-amt" placeholder="0.00" required>
+                            </div>
+                            <button type="submit" class="btn-primary">Recharge</button>
+                        </form>
+                    </div>
+
+                    <div class="glass-card bill-option">
+                        <div class="bill-header">
+                            <span class="bill-icon">💳</span>
+                            <h3>Credit Card Payment</h3>
+                        </div>
+                        <form id="credit-card-form">
+                            <div class="form-group">
+                                <label>Card Last 4 Digits *</label>
+                                <input type="text" id="cc-number" placeholder="1234" maxlength="4" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount (USD) *</label>
+                                <input type="number" id="cc-amt" placeholder="0.00" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Payment Type</label>
+                                <select id="cc-payment-type">
+                                    <option value="partial">Partial Payment</option>
+                                    <option value="full">Full Payment</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-primary">Pay Card</button>
+                        </form>
+                    </div>
+
+                    <div class="glass-card bill-option">
+                        <div class="bill-header">
+                            <span class="bill-icon">🎓</span>
+                            <h3>Education Fees</h3>
+                        </div>
+                        <form id="education-form" class="premium-feature" id="education-form-container">
+                            <div class="form-group">
+                                <label>Institution Name *</label>
+                                <input type="text" id="edu-institution" placeholder="School/University name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Student ID *</label>
+                                <input type="text" id="edu-student-id" placeholder="Student ID" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Fee Amount (USD) *</label>
+                                <input type="number" id="edu-amt" placeholder="0.00" required>
+                            </div>
+                            <button type="submit" class="btn-primary">Pay Fees</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Investments -->
+            <section id="investments" class="page">
+                <div class="page-header">
+                    <h1>📈 Investment Portfolio</h1>
+                    <p>Grow your wealth with diversified investments</p>
+                </div>
+                <div class="glass-card">
+                    <div class="portfolio-overview">
+                        <div class="overview-stat">
+                            <span>Total Investment</span>
+                            <h3 id="total-investment">$46,250.00</h3>
+                        </div>
+                        <div class="overview-stat">
+                            <span>Current Value</span>
+                            <h3 id="portfolio-value">$50,125.75</h3>
+                        </div>
+                        <div class="overview-stat">
+                            <span>Total Returns</span>
+                            <h3 id="total-returns" class="positive">+$3,875.75 (+8.4%)</h3>
+                        </div>
+                        <div class="overview-stat">
+                            <span>1-Year Performance</span>
+                            <h3 id="yearly-performance" class="positive">+12.5%</h3>
+                        </div>
+                    </div>
+
+                    <div class="portfolio-grid">
+                        <div class="investment-card">
+                            <div class="card-header">
+                                <h3>Mutual Funds</h3>
+                                <span class="lock-icon premium-only">🔒</span>
+                            </div>
+                            <p class="amount">$12,500</p>
+                            <p class="growth positive">↑ +8.5%</p>
+                            <div class="fund-details">
+                                <p>Active Funds: 3</p>
+                                <p>Monthly SIP: $500</p>
+                            </div>
+                            <button class="btn-secondary" onclick="investmentDetails('mutual')">View Details</button>
+                        </div>
+
+                        <div class="investment-card">
+                            <div class="card-header">
+                                <h3>Fixed Deposits</h3>
+                                <span class="lock-icon">✓</span>
+                            </div>
+                            <p class="amount">$25,000</p>
+                            <p class="interest">7.2% APY</p>
+                            <div class="fund-details">
+                                <p>Total FDs: 2</p>
+                                <p>Maturity: 18 months</p>
+                            </div>
+                            <button class="btn-secondary" onclick="investmentDetails('fd')">View Details</button>
+                        </div>
+
+                        <div class="investment-card premium-card" id="stocks-card">
+                            <div class="card-header">
+                                <h3>Stocks & ETFs</h3>
+                                <span class="lock-icon premium-only">🔒</span>
+                            </div>
+                            <p class="amount">$8,750</p>
+                            <p class="growth positive">↑ +12.3%</p>
+                            <div class="fund-details">
+                                <p>Holdings: 5 stocks</p>
+                                <p>Diversification: Good</p>
+                            </div>
+                            <button class="btn-secondary" onclick="investmentDetails('stocks')">View Details</button>
+                        </div>
+
+                        <div class="investment-card premium-card" id="crypto-card">
+                            <div class="card-header">
+                                <h3>Crypto Assets</h3>
+                                <span class="lock-icon premium-only">🔒</span>
+                            </div>
+                            <p class="amount">$2,500</p>
+                            <p class="growth positive">↑ +18.7%</p>
+                            <div class="fund-details">
+                                <p>BTC, ETH, SOL</p>
+                                <p>Risk: High</p>
+                            </div>
+                            <button class="btn-secondary" onclick="investmentDetails('crypto')">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="invest-form-container">
+                        <h3>Start New Investment</h3>
+                        <form id="invest-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Investment Type *</label>
+                                    <select id="invest-type" required>
+                                        <option value="">Select investment</option>
+                                        <option value="mutual">Mutual Funds</option>
+                                        <option value="fd">Fixed Deposit</option>
+                                        <option value="stocks" class="premium-option">Stocks & ETFs</option>
+                                        <option value="crypto" class="premium-option">Crypto Assets</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Investment Amount (USD) *</label>
+                                    <input type="number" id="invest-amt" placeholder="0.00" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tenure/Duration</label>
+                                    <input type="text" id="invest-tenure" placeholder="e.g., 5 years, 12 months">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary">Invest Now</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loans -->
+            <section id="loans" class="page">
+                <div class="page-header">
+                    <h1>🏦 Loans & Credit</h1>
+                    <p>Flexible borrowing solutions for your needs</p>
+                </div>
+                <div class="loans-container">
+                    <div class="glass-card loan-card">
+                        <div class="loan-header">
+                            <h3>Home Loan</h3>
+                            <span class="loan-badge">Fixed Rate</span>
+                        </div>
+                        <div class="loan-details">
+                            <div class="detail-row">
+                                <span>Interest Rate</span>
+                                <strong>6.5% p.a.</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span>Max Amount</span>
+                                <strong>$500,000</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span>Tenure</span>
+                                <strong>Up to 30 years</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span>Processing Fee</span>
+                                <strong>0.5%</strong>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="applyLoan('home')">Apply Now</button>
+                    </div>
+
+                    <div class="glass-card loan-card">
+                        <div class="loan-header">
+                            <h3>Personal Loan</h3>
+                            <span class="loan-badge">Instant</span>
+                        </div>
+                        <div class="loan-details">
+                            <div class="detail-row">
+                                <span>Interest Rate</span>
+                                <strong>8.5% - 15.5% p.a.</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span>Max Amount</span>
+                                <strong>$50,000</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span>Tenure</span>
+                                <strong>12 - 60 months</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span>Processing Fee</span>
+                                <strong>$99</strong>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="applyLoan('personal')">Apply Now</button>
+                    </div>
+
+                    <div class="glass-card loan-card premium-card">
+                        <div class="loan-header">
+                            <h3>Business Loan</h3>
+                        </div>
+                        <div class="loan-details">
+                            <div class="detail-row">
+                                <span>Interest Rate</span>
+                                <strong>7.5% - 12.5% p.a.</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span>Max Amount</span>
+                                <strong>$250,000</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span>Tenure</span>
+                                <strong>12 - 84 months</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span>Processing Fee</span>
+                                <strong>1%</strong>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="applyLoan('business')">Apply Now</button>
+                    </div>
+
+                    <div class="glass-card loan-card premium-card">
+                        <div class="loan-header">
+                            <h3>Investment Loan</h3>
+                            
+                        </div>
+                        <div class="loan-details">
+                            <div class="detail-row">
+                                <span>Interest Rate</span>
+                                <strong>6.0% - 10.0% p.a.</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span>Max Amount</span>
+                                <strong>$1,000,000</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span>Tenure</span>
+                                <strong>24 - 120 months</strong>
+                            </div>
+                            <div class="detail-row">
+                                <span>Processing Fee</span>
+                                <strong>0.75%</strong>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="applyLoan('investment')">Apply Now</button>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h3>Your Active Loans</h3>
+                    <div id="active-loans-list" class="loans-list"></div>
+                </div>
+            </section>
+
+            <!-- EMI Calculator -->
+            <section id="emi-calc" class="page">
+                <div class="page-header">
+                    <h1>🧮 EMI Calculator</h1>
+                    <p>Plan your loan repayment with precision</p>
+                </div>
+                <div class="glass-card">
+                    <div class="emi-calculator">
+                        <form id="emi-form">
+                            <div class="form-section">
+                                <h3>Loan Details</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Loan Amount (USD) *</label>
+                                        <div class="amount-input">
+                                            <span>$</span>
+                                            <input type="number" id="loan-amt" min="1000" step="1000" required>
+                                        </div>
+                                        <input type="range" id="loan-amt-slider" min="1000" max="1000000" step="10000" class="slider">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Interest Rate (%) *</label>
+                                        <input type="number" id="loan-rate" min="0.1" step="0.01" required>
+                                        <input type="range" id="loan-rate-slider" min="0.1" max="25" step="0.1" class="slider">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tenure (Months) *</label>
+                                        <input type="number" id="loan-time" min="1" max="600" step="1" required>
+                                        <input type="range" id="loan-time-slider" min="1" max="600" step="1" class="slider">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-primary full-width large">Calculate EMI</button>
+                        </form>
+
+                        <div id="emi-result" class="result-box">
+                            <h4>EMI Calculation Results</h4>
+                            <div class="result-grid">
+                                <div class="result-item">
+                                    <span class="label">Monthly EMI</span>
+                                    <span class="value emi-value">$0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="label">Total Amount</span>
+                                    <span class="value total-value">$0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="label">Total Interest</span>
+                                    <span class="value interest-value">$0.00</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="label">Loan Duration</span>
+                                    <span class="value duration-value">0 years</span>
+                                </div>
+                            </div>
+                            <canvas id="emi-chart"></canvas>
+                            <div id="emi-amortization" class="amortization-table"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Forex Trading (Premium) -->
+            <section id="forex" class="page">
+                <div class="page-header">
+                    <h1>💱 Forex Trading</h1>
+                    <p>Trade multiple currencies with real-time rates</p>
+                    <span class="premium-badge">Premium Feature</span>
+                </div>
+                <div class="glass-card">
+                    <div class="forex-converter">
+                        <div class="converter-section">
+                            <h3>Currency Converter</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>From Currency</label>
+                                    <select id="from-currency">
+                                        <option value="USD">USD - US Dollar</option>
+                                        <option value="EUR">EUR - Euro</option>
+                                        <option value="GBP">GBP - British Pound</option>
+                                        <option value="INR">INR - Indian Rupee</option>
+                                        <option value="JPY">JPY - Japanese Yen</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Amount</label>
+                                    <input type="number" id="from-amount" placeholder="0.00" min="0">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>To Currency</label>
+                                    <select id="to-currency">
+                                        <option value="EUR">EUR - Euro</option>
+                                        <option value="USD">USD - US Dollar</option>
+                                        <option value="GBP">GBP - British Pound</option>
+                                        <option value="INR">INR - Indian Rupee</option>
+                                        <option value="JPY">JPY - Japanese Yen</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Converted Amount</label>
+                                    <input type="number" id="to-amount" placeholder="0.00" readonly>
+                                </div>
+                            </div>
+                            <button class="btn-primary" onclick="convertCurrency()">Convert</button>
+                        </div>
+
+                        <div class="rates-section">
+                            <h3>Live Exchange Rates</h3>
+                            <div id="rates-list" class="rates-table"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            
+
+            <!-- Statements -->
+            <section id="statements" class="page">
+                <div class="page-header">
+                    <h1>📋 Account Statements</h1>
+                    <p>View and download your transaction history</p>
+                </div>
+                <div class="glass-card">
+                    <div class="statement-filters">
+                        <div class="filter-group">
+                            <label>Period</label>
+                            <input type="month" id="statement-month">
+                        </div>
+                        <div class="filter-group">
+                            <label>Transaction Type</label>
+                            <select id="statement-type">
+                                <option value="all">All Transactions</option>
+                                <option value="credit">Credit</option>
+                                <option value="debit">Debit</option>
+                                <option value="transfer">Transfers</option>
+                                <option value="bills">Bills</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Amount Range</label>
+                            <input type="number" id="min-amount" placeholder="Min" min="0">
+                            <input type="number" id="max-amount" placeholder="Max" min="0">
+                        </div>
+                        <button class="btn-secondary" onclick="generateStatement()">Generate</button>
+                        <button class="btn-secondary" onclick="downloadStatementPDF()">📥 Download PDF</button>
+                        <button class="btn-secondary" onclick="downloadStatementCSV()">📊 Download CSV</button>
+                    </div>
+
+                    <div class="statement-summary">
+                        <div class="summary-stat">
+                            <span>Total Credits</span>
+                            <strong id="total-credits">$0.00</strong>
+                        </div>
+                        <div class="summary-stat">
+                            <span>Total Debits</span>
+                            <strong id="total-debits">$0.00</strong>
+                        </div>
+                        <div class="summary-stat">
+                            <span>Net Change</span>
+                            <strong id="net-change">$0.00</strong>
+                        </div>
+                    </div>
+
+                    <div class="statement-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Reference</th>
+                                    <th>Debit</th>
+                                    <th>Credit</th>
+                                    <th>Balance</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="statement-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics -->
+            <section id="analytics" class="page">
+                <div class="page-header">
+                    <h1>📊 Financial Analytics</h1>
+                    <p>Insights into your spending patterns and financial health</p>
+                </div>
+                <div class="analytics-grid">
+                    <div class="glass-card">
+                        <h3>Monthly Spending Trends</h3>
+                        <canvas id="spending-trend-chart"></canvas>
+                    </div>
+                    <div class="glass-card">
+                        <h3>Spending by Category</h3>
+                        <canvas id="category-chart"></canvas>
+                    </div>
+                    <div class="glass-card">
+                        <h3>Income vs Expenses</h3>
+                        <canvas id="income-expense-chart"></canvas>
+                    </div>
+                    <div class="glass-card">
+                        <h3>Financial Health Score</h3>
+                        <div class="health-score">
+                            <div class="score-circle">
+                                <svg viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" stroke-width="8"/>
+                                    <circle cx="50" cy="50" r="45" fill="none" stroke="#10b981" stroke-width="8" 
+                                            stroke-dasharray="282" stroke-dashoffset="47" class="score-ring"/>
+                                </svg>
+                                <div class="score-text">
+                                    <span class="score-number">82</span>
+                                    <span class="score-label">Excellent</span>
+                                </div>
+                            </div>
+                            <div class="score-details">
+                                <div class="detail">
+                                    <span>Savings Rate</span>
+                                    <strong>32%</strong>
+                                    <span class="status positive">Good</span>
+                                </div>
+                                <div class="detail">
+                                    <span>Debt-to-Income</span>
+                                    <strong>15%</strong>
+                                    <span class="status positive">Low</span>
+                                </div>
+                                <div class="detail">
+                                    <span>Investment Ratio</span>
+                                    <strong>28%</strong>
+                                    <span class="status positive">Strong</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile -->
+            <section id="profile" class="page">
+                <div class="page-header">
+                    <h1>👤 My Profile</h1>
+                    <p>Manage your personal information and preferences</p>
+                </div>
+                <div class="profile-container">
+                    <div class="glass-card profile-box">
+                        <div class="profile-header">
+                            <div class="avatar-large" id="profile-avatar">JD</div>
+                            <div class="profile-info">
+                                <h2 id="profile-name">John Doe</h2>
+                                <p id="profile-tier" class="tier-info">Free Tier Member</p>
+                                <p id="profile-member-since">Member since January 2024</p>
+                            </div>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>Personal Information</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Full Name</label>
+                                    <p id="info-name">--</p>
+                                </div>
+                                <div class="info-item">
+                                    <label>Email Address</label>
+                                    <p id="info-email">--</p>
+                                </div>
+                                <div class="info-item">
+                                    <label>Phone Number</label>
+                                    <p id="info-phone">--</p>
+                                </div>
+                                <div class="info-item">
+                                    <label>Date of Birth</label>
+                                    <p id="info-dob">--</p>
+                                </div>
+                                <div class="info-item">
+                                    <label>Address</label>
+                                    <p id="info-address">--</p>
+                                </div>
+                                <div class="info-item">
+                                    <label>Account Status</label>
+                                    <p id="info-status"><span class="status-badge active">Active</span></p>
+                                </div>
+                            </div>
+                            <button class="btn-secondary" onclick="editProfile()">✏️ Edit Profile</button>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>Account Details</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Primary Account</label>
+                                    <p>****4589</p>
+                                </div>
+                                <div class="info-item">
+                                    <label>Account Type</label>
+                                    <p>Savings Account</p>
+                                </div>
+                                <div class="info-item">
+                                    <label>IFSC Code</label>
+                                    <p>VERTEX0001</p>
+                                </div>
+                                <div class="info-item">
+                                    <label>Account Holder</label>
+                                    <p id="account-holder">--</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>Security Settings</h3>
+                            <div class="security-options">
+                                <button class="btn-secondary" onclick="changePassword()">🔐 Change Password</button>
+                                <button class="btn-secondary" onclick="setupTwoFA()">✓ Two-Factor Auth</button>
+                                <button class="btn-secondary" onclick="viewSessions()">📱 Active Sessions</button>
+                                <button class="btn-secondary" onclick="updateSecurityQuestions()">❓ Security Questions</button>
+                            </div>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>Preferences</h3>
+                            <div class="preference-item">
+                                <label for="email-notifications">Email Notifications</label>
+                                <input type="checkbox" id="email-notifications" checked>
+                            </div>
+                            <div class="preference-item">
+                                <label for="sms-alerts">SMS Alerts</label>
+                                <input type="checkbox" id="sms-alerts" checked>
+                            </div>
+                            <div class="preference-item">
+                                <label for="transaction-alerts">Transaction Alerts</label>
+                                <input type="checkbox" id="transaction-alerts" checked>
+                            </div>
+                            <button class="btn-primary" onclick="savePreferences()">Save Preferences</button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <h3>Quick Stats</h3>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <span class="stat-icon">💳</span>
+                                <div>
+                                    <p class="stat-label">Cards</p>
+                                    <p class="stat-value">2</p>
+                                </div>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-icon">🏠</span>
+                                <div>
+                                    <p class="stat-label">Accounts</p>
+                                    <p class="stat-value">3</p>
+                                </div>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-icon">🎯</span>
+                                <div>
+                                    <p class="stat-label">Goals</p>
+                                    <p class="stat-value">5</p>
+                                </div>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-icon">⭐</span>
+                                <div>
+                                    <p class="stat-label">Rewards Points</p>
+                                    <p class="stat-value">2,450</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Subscription Plans -->
+            <section id="subscription" class="page">
+                <div class="page-header">
+                    <h1>Subscription Plans</h1>
+                    <p>Choose the perfect plan for your banking needs</p>
+                </div>
+                <div class="subscription-container">
+                    <div class="glass-card plan-card free-plan">
+                        <div class="plan-header">
+                            <h3>Free Tier</h3>
+                            <p class="plan-price">$0<span>/month</span></p>
+                        </div>
+                        <div class="plan-description">Perfect for getting started with digital banking</div>
+                        <ul class="plan-features">
+                            <li>✓ Basic Bank Transfers</li>
+                            <li>✓ Bill Payments</li>
+                            <li>✓ Mobile Recharge</li>
+                            <li>✓ Basic Analytics</li>
+                            <li>✗ Investments (Limited)</li>
+                            <li>✗ Loans</li>
+                            <li>✗ Forex Trading</li>
+                            <li>✓ Mobile App Access</li>
+                            <li class="limit">Transaction Limit: $10,000/month</li>
+                        </ul>
+                        <button class="btn-secondary full-width" id="current-plan-btn" onclick="currentPlan('free')">Current Plan</button>
+                    </div>
+
+                    <div class="glass-card plan-card silver-plan">
+                        <div class="plan-header">
+                            <h3>Silver Tier</h3>
+                            <p class="plan-price">$9.99<span>/month</span></p>
+                        </div>
+                        <div class="plan-description">Enhanced features for active investors</div>
+                        <ul class="plan-features">
+                            <li>✓ Unlimited Transfers</li>
+                            <li>✓ All Free Features</li>
+                            <li>✓ Mutual Funds & FDs</li>
+                            <li>✓ Basic Loans</li>
+                            <li>✓ Advanced Analytics</li>
+                            <li>✓ Priority Support</li>
+                            <li>✗ Forex Trading</li>
+                            <li>✓ Cashback 0.5%</li>
+                            <li class="limit">Transaction Limit: $50,000/month</li>
+                        </ul>
+                        <button class="btn-primary full-width" onclick="upgradePlan('silver')">Upgrade Now</button>
+                    </div>
+                    <div class="glass-card plan-card premium-plan featured">
+                        <div class="badge">Most Popular</div>
+                        <div class="plan-header">
+                            <h3>Premium Tier</h3>
+                            <p class="plan-price">$19.99<span>/month</span></p>
+                        </div>
+                        <div class="plan-description">Maximum benefits for serious wealth builders</div>
+                        <ul class="plan-features">
+                            <li>✓ Unlimited Everything</li>
+                            <li>✓ All Silver Features</li>
+                            <li>✓ Stocks & Crypto</li>
+                            <li>✓ Forex Trading</li>
+                            <li>✓ Wealth Management</li>
+                            <li>✓ AI-Powered Insights</li>
+                            <li>✓ Personal Advisor</li>
+                            <li>✓ Cashback 2%</li>
+                            <li>✓ Live Market Data</li>
+                            <li class="limit">Transaction Limit: Unlimited</li>
+                        </ul>
+                        <button class="btn-primary full-width" onclick="upgradePlan('premium')">Upgrade Now</button>
+                    </div>
+                </div>
+
+                <div class="comparison-section">
+                    <h3>Plan Comparison</h3>
+                    <div class="comparison-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Free</th>
+                                    <th>Silver</th>
+                                    <th>Premium</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Monthly Fee</td>
+                                    <td>$0</td>
+                                    <td>$9.99</td>
+                                    <td>$19.99</td>
+                                </tr>
+                                <tr>
+                                    <td>Transfers</td>
+                                    <td>Limited</td>
+                                    <td>Unlimited</td>
+                                    <td>Unlimited</td>
+                                </tr>
+                                <tr>
+                                    <td>Investments</td>
+                                    <td>FDs Only</td>
+                                    <td>Mutual Funds + FDs</td>
+                                    <td>All Types</td>
+                                </tr>
+                                <tr>
+                                    <td>Loans</td>
+                                    <td>None</td>
+                                    <td>Personal</td>
+                                    <td>All Types</td>
+                                </tr>
+                                <tr>
+                                    <td>Forex Trading</td>
+                                    <td>❌</td>
+                                    <td>❌</td>
+                                    <td>✓</td>
+                                </tr>
+                                <tr>
+                                    <td>Wealth Management</td>
+                                    <td>❌</td>
+                                    <td>❌</td>
+                                    <td>✓</td>
+                                </tr>
+                                <tr>
+                                    <td>Priority Support</td>
+                                    <td>❌</td>
+                                    <td>✓</td>
+                                    <td>✓</td>
+                                </tr>
+                                <tr>
+                                    <td>Personal Advisor</td>
+                                    <td>❌</td>
+                                    <td>❌</td>
+                                    <td>✓</td>
+                                </tr>
+                                <tr>
+                                    <td>Cashback</td>
+                                    <td>0%</td>
+                                    <td>0.5%</td>
+                                    <td>2%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings -->
+            <section id="settings" class="page">
+                <div class="page-header">
+                    <h1>⚙️ Settings</h1>
+                    <p>Customize your banking experience</p>
+                </div>
+                <div class="settings-container">
+                    <div class="glass-card settings-section">
+                        <h3>Display Settings</h3>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <label>Dark Mode</label>
+                                <p>Enable dark theme for comfortable viewing</p>
+                            </div>
+                            <button class="toggle-switch" id="dark-mode-toggle">OFF</button>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <label>Language</label>
+                                <p>Choose your preferred language</p>
+                            </div>
+                            <select id="language-select">
+                                <option value="en">English</option>
+                                <option value="hi">Hindi</option>
+                                <option value="te">Telugu</option>
+                                <option value="ta">Tamil</option>
+                                <option value="ur">Urdu</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="glass-card settings-section">
+                        <h3>Notification Settings</h3>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <label>Transaction Alerts</label>
+                                <p>Get notified for every transaction</p>
+                            </div>
+                            <input type="checkbox" checked>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <label>Security Alerts</label>
+                                <p>Receive alerts for security events</p>
+                            </div>
+                            <input type="checkbox" checked>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-label">
+                                <label>Promotional Messages</label>
+                                <p>Receive offers and promotions</p>
+                            </div>
+                            <input type="checkbox">
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="otp-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('otp-modal')">×</button>
+            <h3>🔐 Two-Factor Authentication</h3>
+            <p id="otp-message">A 6-digit OTP has been sent to your registered mobile.</p>
+            <form id="otp-form" onsubmit="verifyOTP(event)">
+                <input type="text" id="otp-input" placeholder="Enter 6-digit OTP" maxlength="6" required autofocus>
+                <div class="otp-timer">
+                    <span id="timer">00:30</span>
+                </div>
+                <button type="submit" class="btn-primary full-width">Verify & Confirm</button>
+            </form>
+            <p class="small-text">Didn't receive? <a href="#" onclick="resendOTP()">Resend OTP</a></p>
+        </div>
+    </div>
+
+    <div id="success-modal" class="modal-overlay hidden">
+        <div class="modal-content success-modal">
+            <button class="modal-close" onclick="closeModal('success-modal')">×</button>
+            <div class="success-icon">✓</div>
+            <h3 id="success-title">Transaction Successful</h3>
+            <p id="success-message">Your transaction has been processed successfully!</p>
+            <div id="success-details" class="success-details"></div>
+            <button class="btn-primary full-width" onclick="closeModal('success-modal')">Done</button>
+        </div>
+    </div>
+
+    <div id="error-modal" class="modal-overlay hidden">
+        <div class="modal-content error-modal">
+            <button class="modal-close" onclick="closeModal('error-modal')">×</button>
+            <div class="error-icon">⚠️</div>
+            <h3>Process Failed</h3>
+            <p id="error-message">Something went wrong. Please try again.</p>
+            <button class="btn-primary full-width" onclick="closeModal('error-modal')">Try Again</button>
+        </div>
+    </div>
+
+    <div id="global-loader" class="loader-overlay hidden">
+        <div class="spinner"></div>
+        <p>Processing your request...</p>
+    </div>
+
+    <div id="notification-toast" class="notification-toast hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
